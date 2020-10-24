@@ -38,6 +38,7 @@ def get_proxies() -> dict:
                     'ZIP': cols[2],
                     'type': cols[4]
                 }
+                counter += 1
         except:
             pass
     return proxies
@@ -45,5 +46,6 @@ def get_proxies() -> dict:
 
 if __name__ == "__main__":
     proxy_list: dict = get_proxies()
+    print(f'{proxy_list}')
     for proxy in proxy_list.keys():
         print(f'{proxy_list[proxy]}')
