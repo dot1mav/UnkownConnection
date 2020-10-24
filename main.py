@@ -6,10 +6,10 @@ from bs4 import BeautifulSoup
 
 
 def get_proxies():
-    site = 'https://free-proxy-list.net/'
+    site = 'https://free-proxy-list.net/anonymous-proxy.html'
     hdr = {'User-Agent': 'Mozilla/5.0'}
-    req = requests(site, headers=hdr)
-    html = BeautifulSoup(req, "lxml")
+    req = requests.get(site)
+    html = BeautifulSoup(req.text, "lxml")
     rows = html.findAll("tr")
     proxies = []
     for row in rows:
