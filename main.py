@@ -3,9 +3,7 @@ import requests
 import platform
 
 from bs4 import BeautifulSoup
-from requests.models import Response
-
-
+from tqdm import tqdm
 
 
 def ping(host: str) -> bool:
@@ -21,32 +19,31 @@ def ping(host: str) -> bool:
         return False
 
 
-def get_proxies() -> list:
+def get_proxies() -> dict:
     site: str = 'https://free-proxy-list.net/anonymous-proxy.html'
     hdr: dict = {'User-Agent': 'Mozilla/5.0'}
     req = requests.get(site)
     html = BeautifulSoup(req.text, "lxml")
     rows = html.findAll("tr")
-    proxies: list = []
-    for row in rows:
+    proxies: dict = dict()
+    counter: int = 0
+    for row in tqdm(rows, desc='Make proxy list...'):
         cols = row.find_all('td')
         cols = [ele.text for ele in cols]
         try:
-            print(f'{cols}')
-            ipaddr = cols[0]
-            portNum = cols[1]
-            proxy = ipaddr+":"+portNum
-            portName = cols[6]
-            if portName == "no":
-                pass
-            else:
-                proxies.append(str(proxy))
+            if ping(cols[0]) and len(cols) != 0:
+                proxies[counter] = {
+                    'ip': cols[0],
+                    'port': cols[1],
+                    'ZIP': cols[2],
+                    'type': cols[4]
+                }
         except:
             pass
     return proxies
 
 
 if __name__ == "__main__":
-    proxy_list: list = get_proxies()
-    for proxy in proxy_list:
-        print(f'{proxy}')
+    proxy_list: dict = get_proxies()
+    for proxy in proxy_list.keys():
+        print(f'{proxy_list[proxy]}')
