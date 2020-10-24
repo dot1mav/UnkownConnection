@@ -1,29 +1,45 @@
 import os
-import bs4
 import requests
+import platform
 
 from bs4 import BeautifulSoup
+from requests.models import Response
 
 
-def get_proxies():
-    site = 'https://free-proxy-list.net/anonymous-proxy.html'
-    hdr = {'User-Agent': 'Mozilla/5.0'}
+
+
+def ping(host: str) -> bool:
+    current_os = platform.system().lower()
+    if current_os == "windows":
+        parameter = "-n"
+    else:
+        parameter = "-c"
+    exit_code = os.system(f"ping {parameter} 1 -w2 {host} > /dev/null 2>&1")
+    if exit_code == 0:
+        return True
+    else:
+        return False
+
+
+def get_proxies() -> list:
+    site: str = 'https://free-proxy-list.net/anonymous-proxy.html'
+    hdr: dict = {'User-Agent': 'Mozilla/5.0'}
     req = requests.get(site)
     html = BeautifulSoup(req.text, "lxml")
     rows = html.findAll("tr")
-    proxies = []
+    proxies: list = []
     for row in rows:
         cols = row.find_all('td')
         cols = [ele.text for ele in cols]
         try:
-            ipaddr = cols[0]  # ipAddress
-            portNum = cols[1]  # portNum
-            proxy = ipaddr+":"+portNum  # concatinating
-            portName = cols[6]  # portName variable yes / No
+            print(f'{cols}')
+            ipaddr = cols[0]
+            portNum = cols[1]
+            proxy = ipaddr+":"+portNum
+            portName = cols[6]
             if portName == "no":
-                pass  # proxies.append(str(proxy))
+                pass
             else:
-                # if portNum=='80' or portNum=='8080':
                 proxies.append(str(proxy))
         except:
             pass
