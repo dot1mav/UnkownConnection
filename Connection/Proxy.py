@@ -1,6 +1,7 @@
 import requests
 import os
 import random
+import time
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
@@ -19,6 +20,7 @@ class ProxyList(object):
     __site_url: str = None
 
     def __init__(self) -> None:
+        os.system("clear")
         if self.__site_url is None:
             self.__GetSiteUrl()
             self._GetProxy()
@@ -47,6 +49,7 @@ class ProxyList(object):
                     counter += 1
             except:
                 pass
+        self.intrup()
 
     def _ChangeProxy(self) -> None:
         pass
@@ -55,6 +58,7 @@ class ProxyList(object):
         self.__site_url = 'https://free-proxy-list.net/'
 
     def __MakeItBetter(self) -> None:
+        print("Choose you're Connection")
         if len(self._proxies_use.keys()) != 0:
             self._proxies_use.clear()
         random.seed(4096)
@@ -66,7 +70,10 @@ class ProxyList(object):
                 self._proxies_use[counter] = self.__proxies[temp]
                 counter += 1
         if len(self._proxies_use.keys()) <= 3:
+            print('Not Found Try Again')
             self.__MakeItBetter()
+
+        self.intrup()
 
     def __CheckConnection(self, host: AnyStr) -> bool:
         exit_code = os.system(f"ping -c 1 -w2 {host} > /dev/null 2>&1")
@@ -103,3 +110,8 @@ class ProxyList(object):
 
     def __str__(self) -> str:
         return "\n".join(str(self._proxies_use[ke]) for ke in self._proxies_use.keys())
+
+    @staticmethod
+    def intrup() -> None:
+        time.sleep(1)
+        os.system("clear")
