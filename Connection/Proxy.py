@@ -15,7 +15,7 @@ class ProxyServer(object):
 class ProxyList(object):
     __doc__ = " This class made to build and check and change proxy list "
     __proxies: dict = dict()
-    __proxies_use: dict = dict()
+    _proxies_use: dict = dict()
     __site_url: str = None
 
     def __init__(self) -> None:
@@ -55,17 +55,17 @@ class ProxyList(object):
         self.__site_url = 'https://free-proxy-list.net/'
 
     def __MakeItBetter(self) -> None:
-        if len(self.__proxies_use.keys()) != 0:
-            self.__proxies_use.clear()
+        if len(self._proxies_use.keys()) != 0:
+            self._proxies_use.clear()
         random.seed(4096)
         counter: int = 0
         temp: int = 0
         for _ in range(10):
             temp = random.randint(0, max(self.__proxies.keys()))
             if self.__CheckConnection(self.__proxies[temp].get('ip')):
-                self.__proxies_use[counter] = self.__proxies[temp]
+                self._proxies_use[counter] = self.__proxies[temp]
                 counter += 1
-        if len(self.__proxies_use.keys()) <= 3:
+        if len(self._proxies_use.keys()) <= 3:
             self.__MakeItBetter()
 
     def __CheckConnection(self, host: AnyStr) -> bool:
@@ -92,7 +92,7 @@ class ProxyList(object):
 
     def __del__(self) -> None:
         self.__proxies = None
-        self.__proxies_use = None
+        self._proxies_use = None
         self.__site_url = None
 
     def __sizeof__(self) -> int:
@@ -102,4 +102,4 @@ class ProxyList(object):
         pass
 
     def __str__(self) -> str:
-        return "\n".join(str(self.__proxies_use[ke]) for ke in self.__proxies_use.keys())
+        return "\n".join(str(self._proxies_use[ke]) for ke in self._proxies_use.keys())
