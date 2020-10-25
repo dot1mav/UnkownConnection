@@ -75,7 +75,7 @@ class ProxyList(object):
         else:
             return False
 
-    def __ValidateIp(self, ip):
+    def __ValidateIp(self, ip) -> bool:
         ip_part = ip.split('.')
         if len(ip_part) != 4:
             return False
