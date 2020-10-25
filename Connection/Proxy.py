@@ -91,9 +91,9 @@ class ProxyList(object):
         pass
 
     def __del__(self) -> None:
-        del self.__proxies
-        del self.__proxies_use
-        del self.__site_url
+        self.__proxies = None
+        self.__proxies_use = None
+        self.__site_url = None
 
     def __sizeof__(self) -> int:
         return len(self.__proxies)
