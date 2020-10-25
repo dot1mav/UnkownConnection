@@ -1,7 +1,9 @@
 import requests
-import tqdm
+import os
 
+from tqdm import tqdm
 from bs4 import BeautifulSoup
+from typing import AnyStr
 
 
 class Proxy(object):
@@ -29,6 +31,7 @@ class Proxy(object):
             cols = [ele.text for ele in cols]
             try:
                 if len(cols) != 0:
+                    print(cols[0])
                     self.__proxies[counter] = {
                         'ip': cols[0],
                         'port': cols[1],
@@ -42,8 +45,8 @@ class Proxy(object):
     def _ChangeProxy(self) -> None:
         pass
 
-    def __GetSiteUrl(self) -> str:
-        return 'https://free-proxy-list.net/'
+    def __GetSiteUrl(self):
+        self.__site_url = 'https://free-proxy-list.net/'
 
     def __MakeItBetter(self) -> None:
         import random
@@ -51,22 +54,25 @@ class Proxy(object):
         check: int = 0
         for i in range(4):
             temp: int = random.randint(0, max(self.__proxies.keys()))
-            if self.__CheckConnection(self.__proxies[temp]['ip']):
+            print(f'{self.__proxies[temp].get("ip")}')
+            if self.__CheckConnection(self.__proxies[temp].get('ip')):
                 check += 1
             else:
                 self.__proxies.pop(temp)
+
+        del random
+
         if check <= 3:
             self.__MakeItBetter()
 
-
-    def __CheckConnection(host: str) -> bool:
+    def __CheckConnection(self, host: AnyStr) -> bool:
         exit_code = os.system(f"ping -c 1 -w2 {host} > /dev/null 2>&1")
         if exit_code == 0:
             return True
         else:
             return False
 
-    def __call__(self, *args, **kwargs) -> dict:
+    def __call__(self, *args, **kwargs) -> None:
         pass
 
     def __repr__(self) -> str:
@@ -83,4 +89,4 @@ class Proxy(object):
         pass
 
     def __str__(self) -> str:
-        return ''.join(self.__proxies[x for x in self.__proxies.keys()])
+        return " ".join(self.__proxies[ke] for ke in self.__proxies.keys())
