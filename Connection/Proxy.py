@@ -7,6 +7,11 @@ from bs4 import BeautifulSoup
 from typing import AnyStr
 
 
+class ProxyServer(object):
+    def __init__(self) -> None:
+        pass
+
+
 class ProxyList(object):
     __doc__ = " This class made to build and check and change proxy list "
     __proxies: dict = dict()
