@@ -1,6 +1,6 @@
-from Connection.Proxy import Proxy
+from Connection import ct
 
 
 if __name__ == '__main__':
-    mine = Proxy()
-    print(f'{str(mine)}')
+    mine = ct()
+    print(str(mine))
