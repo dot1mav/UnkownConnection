@@ -1,14 +1,16 @@
 import requests
 import os
+import random
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 from typing import AnyStr
 
 
-class Proxy(object):
+class ProxyList(object):
     __doc__ = " This class made to build and check and change proxy list "
     __proxies: dict = dict()
+    __proxies_use: dict = dict()
     __site_url: str = None
 
     def __init__(self) -> None:
@@ -48,18 +50,17 @@ class Proxy(object):
         self.__site_url = 'https://free-proxy-list.net/'
 
     def __MakeItBetter(self) -> None:
-        import random
+        if len(self.__proxies_use.keys()) != 0:
+            self.__proxies_use.clear()
         random.seed(4096)
-        check: int = 0
-        for i in range(10):
-            temp: int = random.randint(0, max(self.__proxies.keys()))
-            print(f'{self.__proxies[temp].get("ip")}')
+        counter: int = 0
+        temp: int = 0
+        for _ in range(10):
+            temp = random.randint(0, max(self.__proxies.keys()))
             if self.__CheckConnection(self.__proxies[temp].get('ip')):
-                check += 1
-
-        del random
-
-        if check <= 3:
+                self.__proxies_use[counter] = self.__proxies[temp]
+                counter += 1
+        if len(self.__proxies_use.keys()) <= 3:
             self.__MakeItBetter()
 
     def __CheckConnection(self, host: AnyStr) -> bool:
@@ -98,4 +99,4 @@ class Proxy(object):
         pass
 
     def __str__(self) -> str:
-        return "\n".join(str(self.__proxies[ke]) for ke in self.__proxies.keys())
+        return "\n".join(str(self.__proxies_use[ke]) for ke in self.__proxies_use.keys())
