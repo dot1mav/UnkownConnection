@@ -4,7 +4,7 @@ import random
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
-from typing import AnyStr
+from typing import AnyStr, Any
 
 
 class ProxyServer(object):
@@ -87,7 +87,7 @@ class ProxyList(object):
                 return False
         return True
 
-    def __call__(self, *args, **kwargs) -> None:
+    def __call__(self, *args: Any, **kwds: Any) -> Any:
         pass
 
     def __del__(self) -> None:
