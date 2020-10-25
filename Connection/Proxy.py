@@ -23,7 +23,7 @@ class ProxyList(object):
             self.__GetSiteUrl()
             self._GetProxy()
         else:
-            self.__GetProxy()
+            self._GetProxy()
 
         self.__MakeItBetter()
 
@@ -90,12 +90,10 @@ class ProxyList(object):
     def __call__(self, *args, **kwargs) -> None:
         pass
 
-    def __repr__(self) -> str:
-        del self.__proxies
-        del self.__site_url
-
     def __del__(self) -> None:
-        pass
+        del self.__proxies
+        del self.__proxies_use
+        del self.__site_url
 
     def __sizeof__(self) -> int:
         return len(self.__proxies)
