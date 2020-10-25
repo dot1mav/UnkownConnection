@@ -30,8 +30,7 @@ class Proxy(object):
             cols = row.find_all('td')
             cols = [ele.text for ele in cols]
             try:
-                if len(cols) != 0:
-                    print(cols[0])
+                if len(cols) != 0 and self.__ValidateIp(cols[0]):
                     self.__proxies[counter] = {
                         'ip': cols[0],
                         'port': cols[1],
@@ -52,13 +51,11 @@ class Proxy(object):
         import random
         random.seed(4096)
         check: int = 0
-        for i in range(4):
+        for i in range(10):
             temp: int = random.randint(0, max(self.__proxies.keys()))
             print(f'{self.__proxies[temp].get("ip")}')
             if self.__CheckConnection(self.__proxies[temp].get('ip')):
                 check += 1
-            else:
-                self.__proxies.pop(temp)
 
         del random
 
@@ -71,6 +68,18 @@ class Proxy(object):
             return True
         else:
             return False
+
+    def __ValidateIp(self, ip):
+        ip_part = ip.split('.')
+        if len(ip_part) != 4:
+            return False
+        for x in ip_part:
+            if not x.isdigit():
+                return False
+            i = int(x)
+            if i < 0 or i > 255:
+                return False
+        return True
 
     def __call__(self, *args, **kwargs) -> None:
         pass
@@ -89,4 +98,4 @@ class Proxy(object):
         pass
 
     def __str__(self) -> str:
-        return " ".join(self.__proxies[ke] for ke in self.__proxies.keys())
+        return "\n".join(str(self.__proxies[ke]) for ke in self.__proxies.keys())
