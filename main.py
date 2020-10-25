@@ -19,10 +19,9 @@ def ping(host: str) -> bool:
         return False
 
 
-def get_proxies() -> dict:
-    site: str = 'https://free-proxy-list.net/anonymous-proxy.html'
+def get_proxies(site_url: str) -> dict:
     hdr: dict = {'User-Agent': 'Mozilla/5.0'}
-    req = requests.get(site)
+    req = requests.get(site_url)
     html = BeautifulSoup(req.text, "lxml")
     rows = html.findAll("tr")
     proxies: dict = dict()
@@ -45,7 +44,6 @@ def get_proxies() -> dict:
 
 
 if __name__ == "__main__":
-    proxy_list: dict = get_proxies()
-    print(f'{proxy_list}')
+    proxy_list: dict = get_proxies('https://free-proxy-list.net/')
     for proxy in proxy_list.keys():
         print(f'{proxy_list[proxy]}')
