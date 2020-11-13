@@ -1,6 +1,6 @@
 import os
-import socket
 import requests
+import random
 
 from typing import Any
 
@@ -14,6 +14,13 @@ class Connection(object):
     def __init__(self) -> None:
         self._proxy: ProxyList = ProxyList()
         self.__local_ip = self.__CheckIP()
+
+    def connect(self) -> None:
+        temp_int: int = random.randint(max(self._proxy._proxies_use.keys()))
+        self.__proxy = f'https://{self._proxy._proxies_use[temp_int]["ip"]}:{self._proxy._proxies_use[temp_int]["port"]}'
+        os.environ['https_proxy'] = self.__proxy
+        os.environ['HTTPS_PROXY'] = self.__proxy
+        print(f'now connect to {self.__CheckIP()}')
 
     @staticmethod
     def __CheckIP() -> str:
