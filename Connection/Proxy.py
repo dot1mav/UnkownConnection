@@ -43,8 +43,7 @@ class ProxyList(object):
                     self.__proxies[counter] = {
                         'ip': cols[0],
                         'port': cols[1],
-                        'ZIP': cols[2],
-                        'type': cols[4]
+                        'Country': cols[3],
                     }
                     counter += 1
             except:
