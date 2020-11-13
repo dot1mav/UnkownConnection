@@ -31,7 +31,7 @@ class ProxyList(object):
 
     def _GetProxy(self) -> None:
         hdr: dict = {'User-Agent': 'Mozilla/5.0'}
-        req = requests.get(self.__site_url)
+        req = requests.get(self.__site_url, headers=hdr)
         html = BeautifulSoup(req.text, "lxml")
         rows = html.findAll("tr")
         counter: int = 0
