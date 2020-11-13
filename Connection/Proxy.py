@@ -55,7 +55,7 @@ class ProxyList(object):
         pass
 
     def __GetSiteUrl(self):
-        self.__site_url = 'https://free-proxy-list.net/'
+        self.__site_url = 'https://www.sslproxies.org/'
 
     def __MakeItBetter(self) -> None:
         print("Choose you're Connection")
